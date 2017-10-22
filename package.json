@@ -1,0 +1,24 @@
+{
+  "name": "hangman-cli",
+  "version": "1.0.0",
+  "description": "Alex's Hangman CLI Game",
+  "main": "hangman.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexsaaats/hangman-cli.git"
+  },
+  "keywords": [
+    "Hangman",
+    "Bootcamp",
+    "CLI"
+  ],
+  "author": "Alex",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexsaaats/hangman-cli/issues"
+  },
+  "homepage": "https://github.com/alexsaaats/hangman-cli#readme"
+}
