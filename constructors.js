@@ -10,18 +10,7 @@ var wordslistA = [
 	{   name: 'Testo', letters: ['t', 'e', 's', 't', 'o'] }
 	];
 
-
-//Randomly select one of the words and send the object to the hangman.js file
-var randomnumber = Math.floor((Math.random() * 4) + 1);
-//console.log("Your random number is: " + randomnumber);
-
-var word = wordslistA[randomnumber].name;
-//console.log("Word is: " + wordo);
-
-var letters = wordslistA[randomnumber].letters;
-//console.log("Letters are: " + letters);
-
-module.exports = { letters, word };
+module.exports = { wordslistA };
 
 
 
