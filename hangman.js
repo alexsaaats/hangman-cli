@@ -10,16 +10,23 @@ console.log("|||   Pick a letter and type it.    |||");
 console.log("|||   You will get a response and   |||");
 console.log("|||   you will see your results.    |||");
 console.log("|||   Keep going until you win      |||");
-console.log("|||   or lose.                      |||");
+console.log("|||   or lose. The words are five   |||");
+console.log("|||   letters and you get ten       |||"); 
+console.log("|||   guesses per word. Good luck!  |||");               
 console.log("---------------------------------------");
 
 
-//Set packages
+//Set packages and globals
 var fs = require("fs");
 var request = require("request");
 var prompt = require("prompt");
 var date = require('date-and-time');
 var now = new Date();
+
+var wins = 0;
+var losses = 0;
+var lettersleft = 5;
+var guessesleft = 10;
 
 
 //Pull in constructor functions and actions
@@ -48,6 +55,11 @@ var playword = constructors.word;
 console.log("Letters are: " + constructors.letters);
 var playletters = constructors.letters;
 
+// Nextprompt function -- this will keep allowing the user to guess until game is over
+function nextprompt() {
+  console.log("You have " + lettersleft + " letters you still need to guess.")
+  console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
+}
 
 //PROMPT - Ask the user what letter they want to play. 
 console.log("---------------------------------------");
@@ -69,29 +81,68 @@ prompt.get(['letter'], function (err, result) {
 
     for (i=0; i < 6; i++) {
       if (lowercaseinput === constructors.letters[i]) {
-      console.log("Hit!");
-      // Add to a counter of hits
-      /////////////////////////
-
+      console.log("Letter " + [i] + ": Hit!");
+      lettersleft--;
       }
-        else console.log("Miss!")
-          //Add to a counter of misses
-        ////////////////////////
+        else console.log("Letter " + [i] + ": Miss :(")
     }
+  guessesleft--;
 
+  console.log("You have " + lettersleft + " letters you still need to guess.")
+  console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
 
-//You won function
-////////////////////////
-
-
-//You lose function
-//////////////////////////
-
-
-//Start over function
-////////////////////////////////
-
-
+  nextprompt();
 
 //Closing the prompt
  });
+
+//nextprompt();
+
+// Nextprompt function -- this will keep allowing the user to guess until game is over
+function nextprompt() {
+  //console.log("You have " + lettersleft + " letters you still need to guess.")
+  //console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
+
+prompt.get(['letter1'], function (err, result) {
+  // Log the results. 
+  console.log(' --> You chose: ' + result.letter1);
+  //convert to lowercase
+  var lowercaseinput = result.letter1.toLowerCase();
+  console.log(' --> In lowercase: ' + lowercaseinput);
+
+  //Log the input
+    fs.appendFile('log.txt', "The command was: " + result.letter1 + " logged at " + date.format(now, 'YYYY/MM/DD HH:mm:ss') + ",", function(err) {
+      if (err) {
+      console.log(err);
+      }
+    });
+
+    for (i=0; i < 6; i++) {
+      if (lowercaseinput === constructors.letters[i]) {
+      console.log("Letter " + [i] + ": Hit!");
+      lettersleft--;
+      }
+        else console.log("Letter " + [i] + ": Miss :(")
+    }
+  guessesleft--;
+
+  console.log("You have " + lettersleft + " letters you still need to guess.")
+  console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
+
+  //See if the game is over
+  if (lettersleft <= 0) {
+    console.log("GAME OVER --> YOU WIN");
+  }
+    else if (guessesleft <= 0) {
+    console.log("GAME OVER --> YOU LOSE")
+  }
+    else nextprompt();
+
+
+//Closing the prompt
+});
+//Closing the function NextPrompt
+}
+
+
+
