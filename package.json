@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/alexsaaats/hangman-cli/issues"
   },
-  "homepage": "https://github.com/alexsaaats/hangman-cli#readme"
+  "homepage": "https://github.com/alexsaaats/hangman-cli#readme",
+  "dependencies": {
+    "delay": "^2.0.0"
+  }
 }
