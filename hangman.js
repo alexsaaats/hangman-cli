@@ -29,6 +29,17 @@ var word = "";
 var letters = "";
 var randomnumber = "";
 var lettersused = [];
+var lowercaseinput = "";
+var lci = "";
+var letterswon = [];
+var letterposition = "";
+
+var p0 = "*";
+var p1 = "*";
+var p2 = "*";
+var p3 = "*";
+var p4 = "*";
+
 
 //Pull in constructor functions and actions
 var constructors = require('./constructors.js');
@@ -50,18 +61,24 @@ fs.appendFile('log.txt', "HANGMAN has been run at: " + date.format(now, 'YYYY/MM
 function resetvalues() {
   lettersleft = 5;
   guessesleft = 10;
+  lettersused = [];
+  p0 = "*";
+  p1 = "*";
+  p2 = "*";
+  p3 = "*";
+  p4 = "*";
 }
 
 // Create a WORD
 function getword(num) {
   word = constructors.wordslistA[num].name;
-  console.log("Word is: " + word);
+  //console.log("Word is: " + word);
 //var playword = constructors.wordslistA[num].name;
 }
 // Create letters array
 function getletters(num) {
   letters = constructors.wordslistA[num].letters
-  console.log("Letters are: " + letters);
+  //console.log("Letters are: " + letters);
 //var playletters = constructors.letters;
 }
 
@@ -69,7 +86,7 @@ function newword() {
 // create a randomnumber
 randomnumber = Math.floor((Math.random() * 4) + 1);
 // get word and letters at random
-console.log(randomnumber);
+//console.log(randomnumber);
 getword(randomnumber);
 getletters(randomnumber);
 }
@@ -95,30 +112,45 @@ console.log("Choose a letter:");
 
 prompt.get(['letter'], function (err, result) {
   // Log the results. 
-  console.log(' --> You chose: ' + result.letter);
+  //console.log(' --> You chose: ' + result.letter);
 
   //convert to lowercase
   var lowercaseinput = result.letter.toLowerCase();
-  console.log(' --> In lowercase: ' + lowercaseinput);
+  var lci = result.letter.toLowerCase();
+  //console.log(' --> In lowercase: ' + lowercaseinput);
   lettersused.push(lowercaseinput);
-  console.log(' --> LETTERS USED: ' + lettersused);
+  //console.log(' --> LETTERS USED: ' + lettersused);
+  
 
   //Log the input
-    fs.appendFile('log.txt', "The command was: " + result.letter + " logged at " + date.format(now, 'YYYY/MM/DD HH:mm:ss') + ",", function(err) {
-      if (err) {
-      console.log(err);
-      }
-    });
+  //  fs.appendFile('log.txt', "The command was: " + result.letter + " logged at " + date.format(now, 'YYYY/MM/DD HH:mm:ss') + ",", function(err) {
+  //    if (err) {
+  //    console.log(err);
+  //    }
+  //  });
 
-    for (i=0; i < 6; i++) {
+    for (i=0; i < 5; i++) {
       if (lowercaseinput === letters[i]) {
       console.log("Letter " + [i] + ": Hit!");
       lettersleft--;
+      var letterposition = letters.indexOf(lci);
+      letterswon.push(letterposition);
+      	 	if (letterposition === 0) { p0 = lci	}
+	      		else if (letterposition === 1) { p1 = lci }
+	      			else if (letterposition === 2) { p2 = lci }
+	      				else if (letterposition === 3) { p3 = lci }
+	      					else if (letterposition === 4) { p4 = lci }
+      //console.log(letterposition + "and position is: " + p0);
       }
         else console.log("Letter " + [i] + ": Miss :(")
     }
   guessesleft--;
-
+  
+  console.log("---------------------------------------");
+  console.log(" ");
+  console.log(' --> HANGMAN WON: _' + p0 + '_  _' + p1 + '_  _' + p2 + '_  _' + p3 + '_  _' + p4 + '_');
+  console.log(" ");
+  console.log(' --> LETTERS USED: ' + lettersused);
   console.log("You have " + lettersleft + " letters you still need to guess.")
   console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
 
@@ -142,50 +174,86 @@ console.log("NEXT ROUND: Choose a letter:");
 
 prompt.get(['letter'], function (err, result) {
   // Log the results. 
-  console.log(' --> You chose: ' + result.letter);
+  //console.log(' --> You chose: ' + result.letter);
+
   //convert to lowercase
-  var lowercaseinput = result.letter.toLowerCase();
+  lowercaseinput = result.letter.toLowerCase();
+  lci = result.letter.toLowerCase();
   console.log(' --> In lowercase: ' + lowercaseinput);
-    for (i=0; i < 6; i++) {
+    for (i=0; i < 5; i++) {
       if (lowercaseinput === lettersused[i]) {
         console.log("ERROR :: You already used that letter. Try again.")
-      } 
+        var used = 'Yes';
+      }
     }
 
-    lettersused.push(lowercaseinput);
-    console.log(' --> LETTERS USED: ' + lettersused);
-        //Log the input
-          fs.appendFile('log.txt', "The command was: " + result.letter + " logged at " + date.format(now, 'YYYY/MM/DD HH:mm:ss') + ",", function(err) {
-            if (err) {
-            console.log(err);
-            }
-          });
+    if (used === 'Yes') {
+    	nextprompt();
+    }
 
-    for (i=0; i < 6; i++) {
+    if (used != 'Yes') {
+      	restof();
+    }
+
+//Closing the prompt
+});
+//Closing the function NextPrompt
+}
+
+
+
+
+function restof() {
+    lettersused.push(lowercaseinput);
+    
+        //Log the input
+        //  fs.appendFile('log.txt', "The command was: " + result.letter + " logged at " + date.format(now, 'YYYY/MM/DD HH:mm:ss') + ",", function(err) {
+        //    if (err) {
+        //    console.log(err);
+        //    }
+        //  });
+
+    for (i=0; i < 5; i++) {
       if (lowercaseinput === letters[i]) {
       console.log("Letter " + [i] + ": Hit!");
       lettersleft--;
+      var letterposition = letters.indexOf(lci);
+      letterswon.push(letterposition);
+      		 if (letterposition === 0) { p0 = lci }
+	      		else if (letterposition === 1) { p1 = lci }
+	      			else if (letterposition === 2) { p2 = lci }
+	      				else if (letterposition === 3) { p3 = lci }
+	      					else if (letterposition === 4) { p4 = lci }
+      //console.log(letterposition);
       }
         else console.log("Letter " + [i] + ": Miss :(")
     }
-  guessesleft--;
+  	guessesleft--;
 
-  console.log("You have " + lettersleft + " letters you still need to guess.")
-  console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
-
-
+  	console.log("---------------------------------------");
+  	console.log(" ");
+  	console.log(' --> HANGMAN WON: _' + p0 + '_  _' + p1 + '_  _' + p2 + '_  _' + p3 + '_  _' + p4 + '_');
+  	console.log(" ");
+  	console.log(' --> LETTERS USED: ' + lettersused);
+  	console.log("You have " + lettersleft + " letters you still need to guess.")
+  	console.log("You have " + guessesleft + " guesses left. After that, you lose! Guess wisely.")
 
   //See if the game is over
   if (lettersleft <= 0) {
     console.log("---------------------------------------");
+    console.log("|||       GAME OVER - YOU WIN!      |||");
     console.log("---------------------------------------");
     console.log("GAME OVER --> YOU WIN. Press Y below to play again or press Enter to end.");
       prompt.get(['restart'], function (err, result) {
       // Log the results. 
       console.log(' --> You chose: ' + result.restart);
-        if (result.restart === 'Y') {
+        if (result.restart === 'Y', 'y') {
           //var lettersleft = 5;
           //var guessesleft = 10;
+          console.log("---------------------------------------");
+          console.log("                 |||||                 ");
+          console.log("                 |||||                 ");
+          console.log("                 |||||                 ");
           console.log("---------------------------------------");
           console.log("|||          GAME RESTARTED         |||");
           console.log("---------------------------------------");
@@ -199,6 +267,7 @@ prompt.get(['letter'], function (err, result) {
 
     else if (guessesleft <= 0) {
     console.log("---------------------------------------");
+    console.log("|||       GAME OVER - YOU LOST      |||");
     console.log("---------------------------------------");
     console.log("GAME OVER --> YOU LOSE. Press Y below to play again or press Enter to end.")
       prompt.get(['restart'], function (err, result) {
@@ -208,23 +277,23 @@ prompt.get(['letter'], function (err, result) {
             //var lettersleft = 5;
             //var guessesleft = 10;
             console.log("---------------------------------------");
+            console.log("                 |||||                 ");
+	        console.log("                 |||||                 ");
+	        console.log("                 |||||                 ");
+	        console.log("---------------------------------------");
             console.log("|||          GAME RESTARTED         |||");
             console.log("---------------------------------------");
             resetvalues();
             newword();
             firstprompt();
           }
-          else console.log("You have chosen not to restart.")
+          else console.log("You have chosen not to restart. Ending game.")
       });
     }
 
         else nextprompt();
 
-
-
-//Closing the prompt
-});
-//Closing the function NextPrompt
+//Closing the function restof
 }
 
 

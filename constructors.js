@@ -4,10 +4,10 @@
 var wordslistA = [
 	{	name: 'Jumbo', letters: ['j', 'u', 'm', 'b', 'o'] },
 	{	name: 'Dingo', letters: ['d', 'i', 'n', 'g', 'o'] },
-	{	name: 'Dizzy', letters: ['d', 'i', 'z', 'z', 'y'] },
+	{	name: 'Drain', letters: ['d', 'r', 'a', 'i', 'n'] },
 	{	name: 'Plate', letters: ['p', 'l', 'a', 't', 'e'] },
-	{	name: 'Tizzy', letters: ['t', 'i', 'z', 'z', 'y'] },
-	{   name: 'Testo', letters: ['t', 'e', 's', 't', 'o'] }
+	{	name: 'Plane', letters: ['p', 'l', 'a', 'n', 'e'] },
+	{   name: 'Frame', letters: ['f', 'r', 'a', 'm', 'e'] }
 	];
 
 module.exports = { wordslistA };
